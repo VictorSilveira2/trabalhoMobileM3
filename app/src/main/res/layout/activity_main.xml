@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:fitsSystemWindows="true"
+    android:paddingTop="?attr/actionBarSize">
+
+    <TextView
+        android:id="@+id/textViewCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria_texto"
+        android:textSize="22sp"
+        android:paddingBottom="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewAtividade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/atividade_hoje"
+        android:textSize="20sp"
+        android:paddingBottom="24dp" />
+
+    <Button
+        android:id="@+id/buttonConfirmar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirmar_atividade"
+        android:textSize="18sp"
+        android:backgroundTint="#7B52AB"
+        android:textColor="#FFFFFF"
+        android:paddingVertical="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/buttonHistorico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ver_historico"
+        android:textSize="18sp"
+        android:backgroundTint="#7B52AB"
+        android:textColor="#FFFFFF"
+        android:paddingVertical="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp" />
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">M3 Extensão</string>
+    <string name="categoria_bronze">Categoria: Bronze</string>
+    <string name="atividade_hoje">Atividade de hoje:</string>
+    <string name="confirmar_atividade">Confirmar Atividade</string>
+    <string name="ver_historico">Ver Histórico</string>
+    <string name="atividade_ja_confirmada">Você já confirmou a atividade de hoje!</string>
+    <string name="atividade_registrada">Atividade registrada!</string>
+    <string name="erro_carregar">Erro ao carregar atividade</string>
+    <string name="categoria_texto">Categoria: %1$s</string>
+    <string name="total_atividades">Atividades realizadas: %1$d</string>
+    <string name="sequencia_dias">Sequência atual: %1$d dias</string>
+</resources>
