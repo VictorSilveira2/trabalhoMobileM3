@@ -3,6 +3,7 @@ package com.univali.mobile.m3_extensao;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import androidx.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         createNotificationChannel();
+        pedirPermissaoNotificacao();
     }
 
     @Override
@@ -78,11 +81,9 @@ public class MainActivity extends AppCompatActivity {
         String atividadeSalva = getSharedPreferences("cache", MODE_PRIVATE).getString("atividade_dia", null);
 
         if (dataHoje.equals(dataSalva) && atividadeSalva != null) {
-            // Usa atividade salva se for do mesmo dia
             atividadeDoDia = atividadeSalva;
             textViewAtividade.setText(atividadeDoDia);
         } else {
-            // Caso contrário, busca nova atividade do servidor (ou cache)
             new Thread(() -> {
                 try {
                     JSONArray atividades = baixarAtividadesDoJson();
@@ -90,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
                     runOnUiThread(() -> textViewAtividade.setText(atividadeDoDia));
 
-                    // Salva para usar no mesmo dia depois
                     getSharedPreferences("cache", MODE_PRIVATE)
                             .edit()
                             .putString("atividade_dia", atividadeDoDia)
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = conn.getInputStream();
             String resultado = lerResposta(inputStream);
 
-            // Salva cache local
             getSharedPreferences("cache", MODE_PRIVATE)
                     .edit()
                     .putString("json_atividades", resultado)
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
             return new JSONArray(resultado);
         } catch (Exception e) {
-            // Se falhar, tenta carregar cache local
             String cachedJson = getSharedPreferences("cache", MODE_PRIVATE)
                     .getString("json_atividades", null);
 
@@ -192,6 +190,26 @@ public class MainActivity extends AppCompatActivity {
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void pedirPermissaoNotificacao() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 101) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permissão de notificação concedida!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Você não receberá lembretes diários.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
